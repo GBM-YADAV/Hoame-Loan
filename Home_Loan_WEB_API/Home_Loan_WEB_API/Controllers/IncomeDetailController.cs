@@ -34,63 +34,14 @@ namespace Home_Loan_WEB_API.Controllers
         [HttpPost]
         public ActionResult post(IncomeDetail newobj)
         {
-            if (ModelState.IsValid)
-            {
+            
+            
                 _context.IncomeDetails.Add(newobj);
                 _context.SaveChanges();
-                return Ok();
-            }
-            else
-                return BadRequest();
+                return CreatedAtAction("get", new { id = newobj.incomeId }, newobj);
+            
         }
 
-        [HttpPut("{id}")]
-        public ActionResult put(int? id, IncomeDetail modifiedobj)
-        {
-            if (id == null)
-                return NotFound();
-            else
-            {// select productId,productname,price  from products where productid=id
-                var data = _context.IncomeDetails.FirstOrDefault(p => p.incomeId== id);
-
-
-
-               
-                data.monthlyIncome = modifiedobj.monthlyIncome;
-                data.typeofEmployment=modifiedobj.typeofEmployment;
-                data.retirementAge=modifiedobj.retirementAge;
-                data.organizationType=modifiedobj.organizationType;
-                data.employerName=modifiedobj.employerName;
-
-                _context.SaveChanges();
-
-
-
-                return Ok();
-
-
-
-
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult delete(int? id)
-        {
-            var data = _context.IncomeDetails.FirstOrDefault(p => p.incomeId == id);
-
-            if (data == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-
-                _context.IncomeDetails.Remove(data);
-                _context.SaveChanges();
-                return Ok();
-            }
-
-        }
+        
     }
 }

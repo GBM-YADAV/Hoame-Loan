@@ -16,15 +16,25 @@ namespace Home_Loan_WEB_API.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        [Route("GetAccountsList")]
         public ActionResult get()
         {
             var data = _context.AccountDetails.ToList();
             return Ok(data);
         }
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetAccountById/{id}")]
         public ActionResult get(int id)
         {
             var data = _context.AccountDetails.FirstOrDefault(p => p.accountNumber == id);
+            return Ok(data);
+        }
+        [HttpGet]
+        [Route("GetMaxId")]
+        public ActionResult GetMaxId()
+        {
+            var data=_context.AccountDetails.Max(p => p.accountNumber);
             return Ok(data);
         }
         [HttpPost]
@@ -38,37 +48,9 @@ namespace Home_Loan_WEB_API.Controllers
             {
                 _context.AccountDetails.Add(newaccount);
                 _context.SaveChanges();
-                return Ok();
+                return CreatedAtAction("get", new { id = newaccount.accountNumber }, newaccount);
             }
         }
-        [HttpPut("{id}")]
-        public ActionResult put(int? id, AccountDetail mod)
-        {
-            if (id == null)
-                return NotFound();
-            else
-            {
-                var data = _context.AccountDetails.FirstOrDefault(c => c.accountNumber == id);
-                //data.productid = mod.productid;
-                data.balance = mod.balance;
-                _context.SaveChanges();
-
-                return Ok();
-
-            }
-        }
-        [HttpDelete("{id}")]
-        public ActionResult delete(int? id)
-        {
-            if (id == null)
-                return NotFound();
-            else
-            {
-                var data = _context.AccountDetails.FirstOrDefault(c => c.accountNumber== id);
-                _context.AccountDetails.Remove(data);
-                _context.SaveChanges();
-                return Ok();
-            }
-        }
+       
     }
 }

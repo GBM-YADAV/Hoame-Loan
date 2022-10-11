@@ -38,39 +38,9 @@ namespace Home_Loan_WEB_API.Controllers
             {
                 _context.PropertyDetails.Add(newproperty);
                 _context.SaveChanges();
-                return Ok();
+                return CreatedAtAction("get", new { id = newproperty.propertyId }, newproperty);
             }
         }
-        [HttpPut("{id}")]
-        public ActionResult put(int? id, PropertyDetail mod)
-        {
-            if (id == null)
-                return NotFound();
-            else
-            {
-                var data = _context.PropertyDetails.FirstOrDefault(c => c.propertyId == id);
-                //data.productid = mod.productid;
-                data.propertyLocation = mod.propertyLocation;
-                data.propertyName = mod.propertyName;
-                data.estimatedAmount = mod.estimatedAmount;
-                _context.SaveChanges();
-
-                return Ok();
-
-            }
-        }
-        [HttpDelete("{id}")]
-        public ActionResult delete(int? id)
-        {
-            if (id == null)
-                return NotFound();
-            else
-            {
-                var data = _context.PropertyDetails.FirstOrDefault(c => c.propertyId == id);
-                _context.PropertyDetails.Remove(data);
-                _context.SaveChanges();
-                return Ok();
-            }
-        }
+        
     }
 }

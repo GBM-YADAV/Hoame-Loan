@@ -33,67 +33,48 @@ namespace Home_Loan_WEB_API.Controllers
         }
 
         [HttpPost]
-        public ActionResult post(LoanDetail newproduct)
+        public ActionResult post(LoanDetail newobj)
         {
             if (ModelState.IsValid)
             {
-                _context.LoanDetails.Add(newproduct);
+                _context.LoanDetails.Add(newobj);
                 _context.SaveChanges();
-                return Ok();
+                return CreatedAtAction("get", new { id = newobj.applicationId }, newobj);
             }
             else
                 return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public ActionResult put(int? id, LoanDetail modifiedobj)
+        [HttpPut]
+        [Route("Approve/{id}")]
+        public ActionResult put(int? id)
         {
             if (id == null)
                 return NotFound();
             else
             {// select productId,productname,price  from products where productid=id
                 var data = _context.LoanDetails.FirstOrDefault(p => p.applicationId == id);
-
-
-
-
-
-                data.tenure = modifiedobj.tenure;
-                data.loanAmount = modifiedobj.loanAmount;
-               
-                data.loanStatus = modifiedobj.loanStatus;
-
-
+                data.loanStatus = "Approved";
                 _context.SaveChanges();
-
-
-
                 return Ok();
-
-
-
-
             }
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult delete(int? id)
+        [HttpPut]
+        [HttpPut("Reject/{id}")]
+        public ActionResult Reject(int? id)
         {
-            var data = _context.LoanDetails.FirstOrDefault(p => p.applicationId== id);
-
-            if (data == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
             else
-            {
-
-                _context.LoanDetails.Remove(data);
+            {// select productId,productname,price  from products where productid=id
+                var data = _context.LoanDetails.FirstOrDefault(p => p.applicationId == id);
+                data.loanStatus = "Rejected";
                 _context.SaveChanges();
                 return Ok();
             }
-
         }
+
     }
 }
     

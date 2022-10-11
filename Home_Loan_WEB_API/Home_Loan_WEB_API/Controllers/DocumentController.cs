@@ -39,61 +39,12 @@ namespace Home_Loan_WEB_API.Controllers
                 {
                     _context.Documents.Add(newdoc);
                     _context.SaveChanges();
-                    return Ok();
-                }
+                return CreatedAtAction("get", new { id = newdoc.documentId }, newdoc);
+            }
                 else
                     return BadRequest();
             }
 
-            [HttpPut("{id}")]
-            public ActionResult put(int? id, Document modifiedobj)
-            {
-                if (id == null)
-                    return NotFound();
-                else
-                {// select productId,productname,price  from products where productid=id
-                    var data = _context.Documents.FirstOrDefault(p => p.documentId == id);
-
-
-
-
-                    data.customerId = modifiedobj.customerId;
-                    data.panCard = modifiedobj.panCard;
-                    data.lOA = modifiedobj.lOA;
-                    data.salarySlip = modifiedobj.salarySlip;
-                    data.nOCFromBuilder = modifiedobj.nOCFromBuilder;
-                    data.agreementToSale = modifiedobj.agreementToSale;
-                    data.voterId = modifiedobj.voterId;
-
-                    _context.SaveChanges();
-
-
-
-                    return Ok();
-
-
-
-
-                }
-            }
-
-            [HttpDelete("{id}")]
-            public ActionResult delete(int? id)
-            {
-                var data = _context.Documents.FirstOrDefault(p => p.documentId == id);
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    _context.Documents.Remove(data);
-                    _context.SaveChanges();
-                    return Ok();
-                }
-
-            }
+            
         }
     }

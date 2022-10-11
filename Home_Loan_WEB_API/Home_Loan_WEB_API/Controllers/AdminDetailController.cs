@@ -44,52 +44,6 @@ namespace Home_Loan_Web_api.Controllers
                 return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public ActionResult put(int? id, AdminDetail modifiedobj)
-        {
-            if (id == null)
-                return NotFound();
-            else
-            {// select productId,productname,price  from products where productid=id
-                var data = _context.AdminDetails.FirstOrDefault(p => p.adminId == id);
-
-
-
-
-                data.name = modifiedobj.name;
-                data.email = modifiedobj.email;
-                data.password = modifiedobj.password;
-
-
-                _context.SaveChanges();
-
-
-
-                return Ok();
-
-
-
-
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult delete(int? id)
-        {
-            var data = _context.AdminDetails.FirstOrDefault(p => p.adminId == id);
-
-            if (data == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-
-                _context.AdminDetails.Remove(data);
-                _context.SaveChanges();
-                return Ok();
-            }
-
-        }
+        
     }
 }
